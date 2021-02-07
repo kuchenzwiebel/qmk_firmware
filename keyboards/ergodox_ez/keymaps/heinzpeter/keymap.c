@@ -8,6 +8,7 @@
 /* ** for me */
 /* *** todo 
    - start using tap dance, probably for CC-CA-CV as a first thing
+- understand git... arrgh.
 */
 /* * Includes and defines */
 #include QMK_KEYBOARD_H
@@ -79,7 +80,7 @@ const uint32_t PROGMEM unicode_map[] = {
 };
 
 
-/* * Tap Dance */
+/* * Tap Dance Part I */
 
 // based on the code from DanielGGordon
 
@@ -90,7 +91,7 @@ typedef struct {
 } tap;
 
 
-// this part defines all possible tab states up to triple hold
+// define possible states
 enum {
     SINGLE_TAP = 1,
     SINGLE_HOLD,
@@ -103,7 +104,7 @@ enum {
 
 
 
-// Tap dance enums
+// enumerate tap dances
 enum {
     TD_1f1,
     CVXA,
@@ -111,6 +112,8 @@ enum {
     f_search,
 };
 
+
+// not sure what this does
 uint8_t cur_dance(qk_tap_dance_state_t *state);
 
 
