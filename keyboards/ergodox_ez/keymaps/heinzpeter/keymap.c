@@ -91,7 +91,7 @@ typedef struct {
 } tap;
 
 
-// this part defines all possible tab states up to triple hold
+// define possible states
 enum {
     SINGLE_TAP = 1,
     SINGLE_HOLD,
