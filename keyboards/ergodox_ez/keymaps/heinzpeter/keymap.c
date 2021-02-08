@@ -6,11 +6,14 @@
 */
 
 /* ** for me */
+/* if i forget how to keep my branch (fork? whatever) up to date with
+   zsa's repo: 
+   https://stackoverflow.com/questions/41283955/github-keeps-saying-this-branch-is-x-commits-ahead-y-commits-behind */
 /* *** todo 
    - start using tap dance, probably for CC-CA-CV as a first thing
 - understand git... arrgh.
 */
-/* * Includes and defines */
+ /* * Includes and defines */
 #include QMK_KEYBOARD_H
 #include "version.h"
 #include "keymap_german.h"
@@ -140,14 +143,14 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   case TD(TD_1f1):
     return TAPPING_TERM + 1000;
   case TD(e_ctrl):
-    return TAPPING_TERM + 300;
+    return TAPPING_TERM + 100;
   case TD(f_search):
-    return TAPPING_TERM + 300;
+    return TAPPING_TERM + 100;
   case TD(CVXA):
-    return TAPPING_TERM + 300;
+    return TAPPING_TERM + 100;
     // longer for German ü to avoid accidental upper case (auto-shift)
   case DE_UE:
-    return TAPPING_TERM + 1000;
+    return TAPPING_TERM + 500;
   default:
     return TAPPING_TERM;
   }
@@ -1028,7 +1031,7 @@ void e_finished(qk_tap_dance_state_t *state, void *user_data) {
   switch (e_state.state) {
   case SINGLE_TAP: register_code(KC_E); break;
   case SINGLE_HOLD: register_code(KC_LSFT); tap_code(KC_E); break; 
-  case DOUBLE_TAP: break;
+  case DOUBLE_TAP:  tap_code(KC_E); tap_code(KC_E); break;
   case DOUBLE_HOLD: register_code(KC_LCTL); break;
     // Last case is for fast typing. Assuming your key is `f`:
     // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
