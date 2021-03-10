@@ -5,8 +5,8 @@
 LTO_ENABLE = yes # Link Time Optimization, reduces file size
 CONSOLE_ENABLE = no
 COMMAND_ENABLE = no
-AUTO_SHIFT_ENABLE = yes
-AUTO_SHIFT_MODIFIERS = yes
+#AUTO_SHIFT_ENABLE = yes
+#AUTO_SHIFT_MODIFIERS = yes
 # DYNAMIC_MACRO_ENABLE = yes # deactivated for now to save on flashing size
 SRC = matrix.c
 RGB_MATRIX_ENABLE = yes

@@ -13,7 +13,8 @@
    - start using tap dance, probably for CC-CA-CV as a first thing
 - understand git... arrgh.
 */
- /* * Includes and defines */
+
+/* * Includes and defines */
 #include QMK_KEYBOARD_H
 #include "version.h"
 #include "keymap_german.h"
@@ -27,11 +28,14 @@
 
 /* * Macros: the enum part  */
 enum custom_keycodes {
-  RGB_SLD = EZ_SAFE_RANGE,
+  RGB_SLD,
   ID_mark_par,
   ST_MACRO_1,
   M_Id_Quer,
   M_ALT_TAB = SAFE_RANGE, // for super alt tab
+  Memo_bearb,
+  Memo_switch,
+  Memo_both
 };
 
 /* ** Super Alt Tab */
@@ -131,7 +135,7 @@ void cvxa_reset(qk_tap_dance_state_t *state, void *user_data);
 
 
 
-/* * per key tapping terms */
+/* * Per key tapping terms */
 // requires #define TAPPING_TERM_PER_KEY in config.h
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
@@ -148,9 +152,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     return TAPPING_TERM + 100;
   case TD(CVXA):
     return TAPPING_TERM + 100;
-    // longer for German ü to avoid accidental upper case (auto-shift)
+    // longer for German ü on left pinky
   case DE_UE:
-    return TAPPING_TERM + 500;
+    return TAPPING_TERM + 3000;
+    // all other cases: default from 'config.h' (currently 115)
   default:
     return TAPPING_TERM;
   }
@@ -249,7 +254,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     LGUI_T(KC_ESCAPE),KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                RESET,                                          TG(6),     KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_BSPACE,
     KC_TAB,           KC_X,           KC_V,           KC_L,           KC_C,           KC_W,                TG(3),                                          TT(8),     KC_K,           KC_H,           KC_G,           TD(f_search),   KC_Q,           DE_SS,
     LT(2,KC_RALT),    KC_U,           KC_I,           KC_A,           TD(e_ctrl),     KC_O,                                                                           KC_S,           KC_N,           KC_R,           KC_T,           KC_D,           LT(2,DE_Y),
-    LSFT_T(KC_ENTER), DE_UE,          DE_OE,          DE_AE,          KC_P,           DE_Z,              C(DE_Z),                                        C(KC_S),     KC_B,           KC_M,           KC_COMMA,       KC_DOT,         KC_J,           RSFT_T(KC_ENTER),
+    LSFT_T(KC_ENTER), LT(1,DE_UE),          DE_OE,          DE_AE,          KC_P,           DE_Z,              C(DE_Z),                                        C(KC_S),     KC_B,           KC_M,           KC_COMMA,       KC_DOT,         KC_J,           RSFT_T(KC_ENTER),
     SH_OS,         OSM(MOD_LCTL),  KC_LGUI,        OSM(MOD_LALT),  LT(1,KC_SPACE),                                                                                                 LT(1,KC_SPACE),   OSM(MOD_LALT),  KC_RALT,        OSM(MOD_LCTL),  TT(7),
                                                                                                                                     /* thumbs */
     /*                                                                     2     */                 LSFT(KC_F10),   LCTL(KC_F),        /* */    TD(CVXA),     LALT(KC_TAB),
@@ -480,6 +485,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
+
 /* ** Layer 5: Indesign */
 // =============================================  LAYER 5 =======================   INDESIGN  ============
  /*
@@ -546,25 +552,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *
  *    ,------------------------------------------------------------------------.              ,-------------------------------------------------------------------------.
  *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
- *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
+ *    |    TO(0)   |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
  *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
  *    |------------+---------+---------+---------+---------+-------------------|              |---------+---------+---------+---------+---------+---------+-------------|
  *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
- *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
- *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
- *    |------------+---------+---------+---------+---------+---------|         |              |         |---------+---------+---------+---------+---------+-------------|
- *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
- *    |            |         |         |         |         |         |---------|              |---------|         |         |         |         |         |             |
+ *    |            |         |         |   Up    |         |         |         |              |         |         |         |         |         |         |             |
  *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
  *    |------------+---------+---------+---------+---------+---------|         |              |         |---------+---------+---------+---------+---------+-------------|
  *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
+ *    |            |         |  C-Left |   Down  | C-Right |         |---------|              |---------|         |         |         |         |         |             |
  *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
+ *    |------------+---------+---------+---------+---------+---------|         |              |         |---------+---------+---------+---------+---------+-------------|
+ *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
+ *    |            |         |         |         | C-p     |         |         |              |         |         |         |         |         |         |             |
  *    |            |         |         |         |         |         |         |              |         |         |         |         |         |         |             |
  *     ------------+---------+---------+---------+---------+-------------------'               -------------------+---------+---------+---------+---------+-------------'
- *     |           |         |         |         |         |                                              |         |         |         |         |             |
- *     |           |         |         |         |         |                                              |         |         |         |         |             |
- *     |           |         |         |         |         |                                              |         |         |         |         |             |
- *      ---------------------------------------------------'                                               -----------------------------------------------------'
+ *     |           |         |         |         |         |                                            |         |         |         |         |             |
+ *     |           |         | C-Up    | C-Down  | C-Space |                                            |         |         |         |         |             |
+ *     |           |         |         |         |         |                                            |         |         |         |         |             |
+ *      ---------------------------------------------------'                                             -----------------------------------------------------'
  *
  *
  *                                                ,-------------------.           ,--------------------.
@@ -591,7 +597,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
            _______,        _______, LCTL(KC_UP),    LCTL(KC_DOWN),  LCTL(KC_SPACE),                                                                                                 LCTL(KC_UP),    LCTL(KC_DOWN),  LCTL(KC_SPACE), KC_DOWN,        KC_UP,
                                                                                                            _______,        _______,        _______,        _______,
                                                                                                                            _______,        _______,
-                                                                                           _______,        _______,        _______,     LCTL(KC_P),            _______,        _______
+                                                                                           _______,        _______,        _______,     Memo_both,        Memo_bearb,  Memo_switch
   ),
 
 
@@ -832,11 +838,14 @@ void rgb_matrix_indicators_user(void) {
 
 
 
+
 /* * Macros: the definitions */
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
 
+
+    
   case ID_mark_par:		// Indesign: mark the whole paragraph (including line break)
     if (record->event.pressed) {
       // move forward 1 char (to make sure we're inside the paragraph), move to beginning of paragraph, hold C and move to end of paragraph
@@ -844,6 +853,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     break;
 
+    
+    
   case M_Id_Quer:		// Indesign: Open quick access and type "Querver", wait for Indesign to complete, then hit Enter to open
     if (record->event.pressed) {
       SEND_STRING(SS_LCTL(SS_TAP(X_ENTER)) SS_DELAY(100) "Querverweis" SS_DELAY(1000) SS_TAP(X_ENTER));
@@ -852,6 +863,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     break;
 
 
+    
   case M_ALT_TAB:
     if (record->event.pressed) {
       if (!is_alt_tab_active) {
@@ -864,7 +876,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       unregister_code(KC_TAB);
     }
     break;
-   
+
+    
+    
+  case Memo_bearb:		// MemoQ: Open entry, wait, confirm
+    if (record->event.pressed) {
+      SEND_STRING(SS_LCTL(SS_TAP(X_N)) SS_DELAY(500) SS_TAP(X_ENTER) );
+
+    }
+    break;
+
+
+    
+  case Memo_switch:		// MemoQ: refocus (send "Tab" two times) and go down one Segment
+    if (record->event.pressed) {
+      SEND_STRING(
+		  	  SS_LALT(SS_TAP(X_TAB)) SS_DELAY(200) SS_LALT(SS_TAP(X_TAB))  SS_DELAY(200)
+		  SS_TAP(X_DOWN) );
+
+    }
+    break;
+
+
+
+  case Memo_both:		// MemoQ: refocus (send "Tab" two times) and go down one Segment
+    if (record->event.pressed) {
+      SEND_STRING(
+		  SS_LCTL(SS_TAP(X_N)) SS_DELAY(500) SS_TAP(X_ENTER) SS_DELAY(250)
+		  SS_LALT(SS_TAP(X_TAB)) SS_DELAY(250) SS_LALT(SS_TAP(X_TAB))  SS_DELAY(250)
+		  SS_TAP(X_DOWN) );
+
+    }
+    break;
+
+    
+    
   case RGB_SLD:                // not sure what this one does, was included in my ORYX export
     if (record->event.pressed) {
       rgblight_mode(1);
@@ -1053,7 +1099,7 @@ void e_reset(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 
-/* ** e_ctrl tap dance */
+/* ** f_search tap dance */
 // gives f, F, , C-f
 
 // Create an instance of 'tap' for the 'cvxa' tap dance.
@@ -1064,10 +1110,10 @@ static tap f_state = {
 
 void f_finished(qk_tap_dance_state_t *state, void *user_data) {
   f_state.state = cur_dance(state);
-  switch (f_state.state) {
+  switch (f_state.state) { 
   case SINGLE_TAP: register_code(KC_F); break;
   case SINGLE_HOLD: register_code(KC_LSFT); tap_code(KC_F); break; 
-  case DOUBLE_TAP: break;
+  case DOUBLE_TAP: tap_code(KC_F); tap_code(KC_F); break;
   case DOUBLE_HOLD: register_code(KC_LCTL); tap_code(KC_F); break;
     // Last case is for fast typing. Assuming your key is `f`:
     // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.

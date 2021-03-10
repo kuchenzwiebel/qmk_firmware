@@ -6,7 +6,7 @@
 
 
 #undef TAPPING_TERM
-#define TAPPING_TERM 114
+#define TAPPING_TERM 115
 
 #define ONESHOT_TAP_TOGGLE 3
 
@@ -39,7 +39,7 @@
 
 /* ** Disable Specific Animations */
 
-/* couldn't figure out how to disable animations and enable just single ones */
+/* I couldn't figure out how to disable animations and enable just single ones */
 /* so I just disable them all one after the other, saves me about 3.380 bytes of space */
 #define DISABLE_RGB_MATRIX_ALPHAS_MODS
 #define DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN
