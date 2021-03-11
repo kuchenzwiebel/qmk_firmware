@@ -35,7 +35,8 @@ enum custom_keycodes {
   M_ALT_TAB = SAFE_RANGE, // for super alt tab
   Memo_bearb,
   Memo_switch,
-  Memo_both
+  Memo_both,
+  Refocus
 };
 
 /* ** Super Alt Tab */
@@ -908,6 +909,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     }
     break;
+
+  case refocus:   // refocus windows if focus was lost by sending M-Tab twice
+    if (record->event.pressed) {
+      SEND_STRING(
+		  SS_LALT(SS_TAP(X_TAB)) SS_DELAY(250) SS_LALT(SS_TAP(X_TAB))
+    }
+    break;
+
 
     
     
